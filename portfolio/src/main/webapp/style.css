@@ -7,3 +7,8 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+.navbar-icon-background{
+    background-color: hsl(0, 0%, 96%);
+    border-color: hsl(0, 0%, 96%);
+}
