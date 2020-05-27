@@ -21,11 +21,3 @@ $(document).ready(function(){
     });
     
 });
-
-/* 
-export const render = function() {
-   $('#2048-button').click(function(){
-        $('#project-pic').attr('src','images/2048-image.png');
-    });
-}
-*/

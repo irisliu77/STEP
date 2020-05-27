@@ -6,7 +6,7 @@ npm init
 npm install bulma
 ```
 To run a local server, execute this
-command in ~/step/portfolio:
+command in ~/step/portfolio/src/main/webapp:
 
 ```bash
  mvn package appengine:run
