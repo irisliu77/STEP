@@ -12,3 +12,8 @@
     background-color: hsl(0, 0%, 96%);
     border-color: hsl(0, 0%, 96%);
 }
+
+.self-introduction{
+    text-align: right;
+    font-family: sans-serif;
+}
