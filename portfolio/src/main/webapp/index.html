@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <title>My Portfolio</title>
-    <link rel="stylesheet" href="node_modules/bulma/css/bulma.css">
+    <link rel="stylesheet" href="node_modules/bulma/css/bulma.min.css">
     <link rel="stylesheet" href="style.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="script.js"></script>
   </head>
   <body>
@@ -54,8 +55,7 @@
     </nav>
   </div>
 
-  <div class="hero-body">
-    
+  <div class="hero-body"> 
     <div class="columns is-centered">
        <div class="column is-one-third">
            <div class="container has-text-centered">
@@ -74,25 +74,35 @@
     <nav class="tabs is-boxed is-fullwidth">
       <div class="container">
         <ul>
-          <li class="is-active">
-            <a>Workout Ninja</a>
+          <li style="text-align:center;">
+            <button class="button is-light project-name" id="workout-ninja-button">Workout Ninja</button>
           </li>
-          <li>
-            <a>2048</a>
+          <li style="text-align:center;">
+            <button class="button is-light project-name" id="2048-button" href="">2048</button>
           </li>
-          <li>
-            <a>Mini Tweeter</a>
+          <li style="text-align:center;">
+            <button class="button is-light project-name" id="tweeter-button">Mini Tweeter</button>
           </li>
-          <li>
-            <a>Job4U</a>
+          <li style="text-align:center;">
+            <button class="button is-light project-name" id="job-button">Job4U</button>
           </li>
-          <li>
-            <a>MMR Vaccination in US School</a>
+          <li style="text-align:center;"> 
+            <button class="button is-light project-name" id="mmr-button">MMR Vaccination in US School</button>
           </li>
         </ul>
       </div>
     </nav>
+    <div class="columns is-centered">
+        <div class="column is-one-third">
+            <div class="container has-text-centered">
+                <br>
+                <img id="project-pic" src="images/Workout-Ninja.jpg">
+            </div>
+        </div>
+    </div>
   </div>
-    </section>
-  </body>
+
+
+ </section>
+</body>
 </html>
