@@ -3,11 +3,24 @@
     border-color: hsl(0, 0%, 96%);
 }
 
-.self-introduction{
+.self-introduction {
     text-align: right;
     font-family: sans-serif;
+    margin-top: 1em;
 }
 
 #project-pic{
     max-width: 45%
+}
+
+.project-list{
+    text-align: center;
+}
+
+.hero.is-large .hero-body {
+    padding: 12rem 1.5rem;
+}
+
+.columns.is-centered {
+    padding-bottom: 5em;
 }
