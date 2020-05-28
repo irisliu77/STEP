@@ -13,23 +13,14 @@
 // limitations under the License.
 
 $(document).ready(function(){
-    $('#workout-ninja-button').click(function(){
-        $('#project-pic').attr('src','images/Workout-Ninja.jpg');
-    });
+    $('#2048-pic').hide();
+    $('#tweeter-pic').hide();
+    $('#job-pic').hide();
+    $('#mmr-pic').hide();
 
-    $('#2048-button').click(function(){
-        $('#project-pic').attr('src','images/2048-image.png');
-    });
-
-    $('#tweet-button').click(function(){
-        $('#project-pic').attr('src','images/tweeter-image.png');
-    });
-
-    $('#mmr-button').click(function(){
-        $('#project-pic').attr('src','images/mmr-image.png');
-    });
-    
-    $('#job-button').click(function(){
-        $('#project-pic').attr('src','images/job-image.png');
+    $('.project-name').click(function(){
+        $('.project-pic').hide();
+        let name = $(this).attr('id');
+        $('#'+name+'-pic').show();
     });
 });
