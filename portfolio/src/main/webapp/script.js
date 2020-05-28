@@ -13,15 +13,14 @@
 // limitations under the License.
 
 $(document).ready(function(){
-    handleClickProject();
-});
-
-const handleClickProject = function(){
     $('#2048-pic').hide();
     $('#tweeter-pic').hide();
     $('#job-pic').hide();
     $('#mmr-pic').hide();
+    handleClickProject();
+});
 
+const handleClickProject = function(){
     $('.project-name').click(function(){
         $('.project-pic').hide();
         let name = $(this).attr('id');
