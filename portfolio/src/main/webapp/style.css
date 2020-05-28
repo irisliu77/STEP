@@ -8,6 +8,11 @@
     font-family: sans-serif;
 }
 
-.project-pic{
-    max-width: 60%
+.project-pic {
+    height: 400px;
+    margin-top: 15%;
+}
+
+.button.is-light {
+    font-size: 120%;
 }
