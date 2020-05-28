@@ -13,6 +13,10 @@
 // limitations under the License.
 
 $(document).ready(function(){
+    handleClickProject();
+});
+
+const handleClickProject = function(){
     $('#2048-pic').hide();
     $('#tweeter-pic').hide();
     $('#job-pic').hide();
@@ -23,4 +27,4 @@ $(document).ready(function(){
         let name = $(this).attr('id');
         $('#'+name+'-pic').show();
     });
-});
+}
