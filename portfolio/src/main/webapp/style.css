@@ -24,3 +24,24 @@
 .columns.is-centered {
     padding-bottom: 5em;
 }
+
+.grid-container {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit,minmax(25%,1fr));
+    grid-auto-flow: dense;
+    grid-auto-rows: auto;
+}
+
+.horizontal {
+    grid-column: span 2;
+}
+
+.vertical{
+    grid-row: span 2;
+}
+
+.big{
+    grid-column: span 2;
+    grid-row: span 2;
+}
