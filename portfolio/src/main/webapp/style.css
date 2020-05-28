@@ -48,5 +48,11 @@
 
 #photo-input{
     margin-top: 5%;
+    margin-bottom: 3%;
+}
+
+#photo-button {
+    margin-left: 90%;
+    width: 10%;
     margin-bottom: 5%;
 }
