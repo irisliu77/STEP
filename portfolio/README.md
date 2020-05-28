@@ -2,8 +2,7 @@ This directory is where you'll write all of your code!
 
 Library Requirement
 ```bash
-npm init
-npm install bulma
+npm install jquery
 ```
 To run a local server, execute this
 command in ~/step/portfolio/src/main/webapp:
