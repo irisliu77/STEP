@@ -11,3 +11,26 @@
 #project-pic{
     max-width: 60%
 }
+.section-name{
+     text-align: left;
+     font-family: sans-serif;
+     font-size: 180%;
+     padding-bottom: 5px;
+ }
+ 
+ .section-title{
+     padding-bottom: 0px;
+ }
+
+.resume{
+     text-align: left;
+ }
+
+.logo{
+    max-width:75%;
+}
+
+.work-title{
+    margin-top:5px;
+    font-weight: bold;
+}
