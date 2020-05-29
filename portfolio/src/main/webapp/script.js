@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-$(document).ready(function(){
+$(document).ready(function() {
     handleFilterButton();
 });
 
-const handleFilterButton = function(){
-    $('#photo-button').on('click',function(){
-        $('.photo').hide();
-        let input = $('#photo-input').val();
-        console.log(input);
-        $('.'+input).show();
+const handleFilterButton = function() {
+    $('#photo-button').on('click',function() {
+        $('.photo').css("display","none");
+        const input = $('#photo-input').val();
+        $('.' + input).css("display","inline");
     });   
 }
