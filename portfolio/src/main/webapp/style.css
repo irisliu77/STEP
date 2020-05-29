@@ -29,3 +29,36 @@
 .columns.is-centered {
     padding-bottom: 5em;
 }
+
+.grid-container {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit,minmax(25%,1fr));
+    grid-auto-flow: dense;
+    grid-auto-rows: auto;
+}
+
+.horizontal {
+    grid-column: span 2;
+}
+
+.vertical{
+    grid-row: span 2;
+}
+
+.big{
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+#photo-input{
+    margin-top: 5%;
+    margin-bottom: 3%;
+}
+
+#filter-button, #unfilter-button{
+    margin-left: 90%;
+    width: 10%;
+    margin-bottom: 5%;
+    font-size: 0.6vw; 
+}
