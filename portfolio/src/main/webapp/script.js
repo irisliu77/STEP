@@ -16,6 +16,12 @@ $(document).ready(function() {
     $('#unfilter-button').css("display","none");
     handleFilterButton();
     handleUnfilterButton();
+  
+    $('#2048-pic').css("display","none");
+    $('#tweeter-pic').css("display","none");
+    $('#job-pic').css("display","none");
+    $('#mmr-pic').css("display","none");
+    handleClickProject();
 });
 
 const handleFilterButton = function() {
@@ -34,5 +40,13 @@ const handleUnfilterButton = function() {
         $('#filter-button').css("display", "inline");
         $('#unfilter-button').css("display", "none");
         $('#photo-input').val('');
-   })
+   });
+}
+    
+const handleClickProject = function() {
+    $('.project-name').click(function() {
+        $('.project-pic').css("display","none");
+        const name = $(this).attr('id');
+        $('#' + name + '-pic').css("display","inline");
+    });
 }
