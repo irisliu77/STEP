@@ -11,3 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+$(document).ready(function() {
+    $('#2048-pic').css("display","none");
+    $('#tweeter-pic').css("display","none");
+    $('#job-pic').css("display","none");
+    $('#mmr-pic').css("display","none");
+    handleClickProject();
+});
+
+const handleClickProject = function() {
+    $('.project-name').click(function() {
+        $('.project-pic').css("display","none");
+        const name = $(this).attr('id');
+        $('#' + name + '-pic').css("display","inline");
+    });
+}

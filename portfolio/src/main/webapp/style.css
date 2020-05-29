@@ -9,8 +9,13 @@
     margin-top: 1em;
 }
 
-#project-pic{
-    max-width: 45%
+.project-pic {
+    height: 400px;
+    margin-top: 15%;
+}
+
+.button.is-light {
+    font-size: 120%;
 }
 
 .project-list{
