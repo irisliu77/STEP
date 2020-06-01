@@ -50,3 +50,9 @@ const handleClickProject = function() {
         $('#' + name + '-pic').css("display","inline");
     });
 }
+
+function getRandomQuoteUsingArrowFunctions() {
+    fetch('/data').then(response => response.text()).then((quote) => {
+        document.getElementById('quote-container').innerHTML = quote;
+    });
+}
