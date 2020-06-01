@@ -7,9 +7,5 @@
   },
   "author": "",
   "license": "Apache-2.0",
-  "dependencies": {
-    "browser-sync": "^2.26.7",
-    "bulma": "^0.8.2",
-    "jquery": "^3.5.1"
-  }
+  "dependencies": {}
 }
