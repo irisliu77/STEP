@@ -22,6 +22,7 @@ $(document).ready(function() {
     $('#job-pic').css("display","none");
     $('#mmr-pic').css("display","none");
     handleClickProject();
+    handleGetCommentButton();
 });
 
 const handleFilterButton = function() {
@@ -51,8 +52,26 @@ const handleClickProject = function() {
     });
 }
 
-function getRandomQuoteUsingArrowFunctions() {
-    fetch('/data').then(response => response.text()).then((quote) => {
-        document.getElementById('quote-container').innerHTML = quote;
+function getComments() {
+    fetch('/data').then(response => response.json()).then((comments) => {
+        const commentsContainer = document.getElementById('comments-container');
+        commentsContainer.innerHTML = '';
+        
+        for(let i in comments) {
+            commentsContainer.appendChild(createListElement('Comment: ' + comments[i]));
+        }
+    });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+const handleGetCommentButton = function() {
+    $('#get-comment-button').click(function() {
+        getComments();
     });
 }
