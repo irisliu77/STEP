@@ -71,9 +71,3 @@ function createListElement(text) {
     liElement.innerText = text;
     return liElement;
 }
-
-const handleGetCommentButton = function() {
-    $('#get-comment-button').click(function() {
-        getComments();
-    });
-}
