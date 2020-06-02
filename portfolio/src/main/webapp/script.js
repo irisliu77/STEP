@@ -23,6 +23,8 @@ $(document).ready(function() {
     $('#mmr-pic').css("display","none");
     handleClickProject();
     handleGetCommentButton();
+
+    getComments();
 });
 
 const handleFilterButton = function() {
@@ -65,9 +67,9 @@ function getComments() {
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+    const liElement = document.createElement('li');
+    liElement.innerText = text;
+    return liElement;
 }
 
 const handleGetCommentButton = function() {

@@ -29,16 +29,19 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    comments.add("Hi");
-    comments.add("Hello");
-    comments.add("World");
-
     String json = convertToJsonUsingGson(comments);
 
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String text = request.getParameter("comment-input");
+      comments.add(text);
+      response.sendRedirect("/index.html");
+  }
+  
   private String convertToJsonUsingGson(ArrayList<String> list) {
     Gson gson = new Gson();
     return gson.toJson(list);

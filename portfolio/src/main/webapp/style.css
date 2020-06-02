@@ -86,3 +86,8 @@
     margin-bottom: 5%;
     font-size: 0.6vw; 
 }
+
+#comment-input {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
