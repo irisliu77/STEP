@@ -21,29 +21,50 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  ArrayList<String> comments = new ArrayList<String>();
-  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJsonUsingGson(comments);
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery res = datastore.prepare(query);
+
+    List<Entity> comments = new ArrayList<>();
+    for(Entity entity : res.asIterable()) {
+        String content = (String) entity.getProperty("content");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Entity comment = new Entity(content, timestamp);
+        comments.add(comment);
+    }
+    
+    Gson gson = new Gson();
 
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(gson.toJson(comments));
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String text = request.getParameter("comment-input");
-      comments.add(text);
+      long timestamp = System.currentTimeMillis();
+
+      Entity comment = new Entity("Comment");
+      comment.setProperty("content", text);
+      comment.setProperty("timestamp",timestamp);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(comment);
+
       response.sendRedirect("/index.html");
-  }
-  
-  private String convertToJsonUsingGson(ArrayList<String> list) {
-    Gson gson = new Gson();
-    return gson.toJson(list);
   }
 }
