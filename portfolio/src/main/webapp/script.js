@@ -52,7 +52,7 @@ const handleClickProject = function() {
     });
 }
 
-function getComments() {
+const getComments = function() {
     fetch('/data').then(response => response.json()).then((comments) => {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = '';
@@ -64,7 +64,7 @@ function getComments() {
 }
 
 /** Creates an <li> element containing text. */
-function createListElement(text) {
+const createListElement = function(text) {
     const liElement = document.createElement('li');
     liElement.innerText = text;
     return liElement;
