@@ -14,7 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +48,6 @@ public class DataServlet extends HttpServlet {
         Entity comment = new Entity(content, timestamp);
         comments.add(comment);
     }
-    
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
