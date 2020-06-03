@@ -27,30 +27,17 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.sps.data.Comment;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery res = datastore.prepare(query);
-
-    List<Entity> comments = new ArrayList<>();
-    for(Entity entity : res.asIterable()) {
-        String content = (String) entity.getProperty("content");
-        long timestamp = (long) entity.getProperty("timestamp");
-
-        Entity comment = new Entity(content, timestamp);
-        comments.add(comment);
-    }
-    
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(comments));
+    response.getWriter().println(gson.toJson(getComments(getRequestNum(request))));
   }
 
   @Override
@@ -64,7 +51,38 @@ public class DataServlet extends HttpServlet {
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(comment);
+      int max = getRequestNum(request);  
+      response.sendRedirect("/index.html?limit=" + max);
+  }
 
-      response.sendRedirect("/index.html");
+  private int getRequestNum(HttpServletRequest request) {
+      String limitString = request.getParameter("limit");
+      int limit;
+      try {
+          limit = Integer.parseInt(limitString);
+      } catch(NumberFormatException e) {
+          return 10;
+      }
+      return limit;
+  } 
+
+  private ArrayList<Comment> getComments(int limit) {
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery res = datastore.prepare(query);
+
+    Iterator<Entity> iter = res.asIterable().iterator();
+    ArrayList<Comment> comments = new ArrayList<Comment>();
+    int i = 0;
+    while(iter.hasNext() && i < limit) {
+        Entity curComment = iter.next();
+
+        String content = (String) curComment.getProperty("content");
+        long timestamp = (long) curComment.getProperty("timestamp");
+        Comment comment = new Comment(content, timestamp);
+        comments.add(comment);
+        i++;
+    }
+    return comments;
   }
 }

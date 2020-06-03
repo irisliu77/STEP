@@ -23,6 +23,7 @@ $(document).ready(function() {
     $('#mmr-pic').css("display","none");
     handleClickProject();
 
+    handleQuantityButton();
     getComments();
 });
 
@@ -53,8 +54,8 @@ const handleClickProject = function() {
     });
 }
 
-function getComments() {
-    fetch('/data').then(response => response.json()).then((comments) => {
+function getComments(max) {
+    fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = '';
         
@@ -68,7 +69,7 @@ function getComments() {
 function createCommentElement(comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
-    commentElement.innerText = comment.key.kind;
+    commentElement.innerText = comment.text;
 
     return commentElement;
 }
@@ -77,4 +78,12 @@ const handleSubmitButton = function() {
     $('#submit-button').click(function() {
         getComments();
     });
+}
+
+const handleQuantityButton = function() {
+    $('#quantity-button').click(function() {
+        max = $('#quantity').val();
+        console.log(max);
+        getComments(max);
+    })
 }
