@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import com.google.sps.data.Comment;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -34,6 +35,8 @@ import com.google.sps.data.Comment;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+    private static final String content = "content";
+    private static final String timestamp = "timestamp";
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
@@ -45,11 +48,11 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String text = request.getParameter("comment-input");
-      long timestamp = System.currentTimeMillis();
+      long time = System.currentTimeMillis();
 
       Entity comment = new Entity("Comment");
-      comment.setProperty("content", text);
-      comment.setProperty("timestamp",timestamp);
+      comment.setProperty(content, text);
+      comment.setProperty(timestamp,time);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(comment);

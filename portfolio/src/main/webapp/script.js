@@ -57,10 +57,10 @@ const handleClickProject = function() {
 const getComments = function() {
     fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
         const commentsContainer = document.getElementById('comments-container');
-        commentsContainer.innerHTML = '';
-        comments.forEach((Comment) => {
-            commentsContainer.appendChild(createCommentElement(Comment));
-        });
+        commentsContainer.innerHTML = ''; 
+        for(let comment of comments) {
+            commentsContainer.appendChild(createCommentElement(comment));
+        };
     });
 }
 
@@ -69,14 +69,7 @@ function createCommentElement(comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
     commentElement.innerText = comment.content;
-
     return commentElement;
-}
-
-const handleSubmitButton = function() {
-    $('#submit-button').click(function() {
-        getComments();
-    });
 }
 
 const handleQuantityButton = function() {
@@ -84,5 +77,6 @@ const handleQuantityButton = function() {
         max = $('#quantity').val();
         console.log(max);
         getComments(max);
-    })
+    });
 }
+
