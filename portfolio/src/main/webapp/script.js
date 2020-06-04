@@ -54,7 +54,7 @@ const handleClickProject = function() {
     });
 }
 
-const getComments = function() {
+const getComments = function(max) {
     fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = ''; 
@@ -74,9 +74,7 @@ function createCommentElement(comment) {
 
 const handleQuantityButton = function() {
     $('#quantity-button').click(function() {
-        max = $('#quantity').val();
-        console.log(max);
+        let max = $('#quantity').val();
         getComments(max);
     });
 }
-
