@@ -25,22 +25,25 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  ArrayList<String> comments = new ArrayList<String>();
+  private final ArrayList<String> comments = new ArrayList<String>();
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    comments.add("Hi");
-    comments.add("Hello");
-    comments.add("World");
-
     String json = convertToJson(comments);
 
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String text = request.getParameter("comment-input");
+      comments.add(text);
+      response.sendRedirect("/index.html");
+  }
+  
   private String convertToJson(ArrayList<String> list) {
-    Gson gson = new Gson();
-    return gson.toJson(list);
+      Gson gson = new Gson();
+      return gson.toJson(list);
   }
 }

@@ -22,7 +22,8 @@ $(document).ready(function() {
     $('#job-pic').css("display","none");
     $('#mmr-pic').css("display","none");
     handleClickProject();
-    handleGetCommentButton();
+    
+    getComments();
 });
 
 const handleFilterButton = function() {
@@ -57,8 +58,8 @@ const getComments = function() {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = '';
         
-        for(let i in comments) {
-            commentsContainer.appendChild(createListElement('Comment: ' + comments[i]));
+        for(let comment of comments) {
+            commentsContainer.appendChild(createListElement('Comment: ' + comment));
         }
     });
 }
@@ -68,10 +69,4 @@ const createListElement = function(text) {
     const liElement = document.createElement('li');
     liElement.innerText = text;
     return liElement;
-}
-
-const handleGetCommentButton = function() {
-    $('#get-comment-button').click(function() {
-        getComments();
-    });
 }
