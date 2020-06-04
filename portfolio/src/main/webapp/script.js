@@ -65,7 +65,7 @@ const getComments = function(max) {
 }
 
 /** Creates an <li> element containing text. */
-function createCommentElement(comment) {
+const createCommentElement = function(comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
     commentElement.innerText = comment.content;
@@ -78,3 +78,7 @@ const handleQuantityButton = function() {
         getComments(max);
     });
 }
+/*
+const deleteComments = function() {
+    fetch('/delete-data').then
+}*/
