@@ -37,6 +37,7 @@ import com.google.sps.data.Comment;
 public class DataServlet extends HttpServlet {
     private static final String content = "content";
     private static final String timestamp = "timestamp";
+    private static final int defaultMaxComments = 10;
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
@@ -64,11 +65,10 @@ public class DataServlet extends HttpServlet {
 
   private int getRequestNum(HttpServletRequest request) {
       String limitString = request.getParameter("limit");
-      int limit;
       try {
-          limit = Integer.parseInt(limitString);
+          int limit = Integer.parseInt(limitString);
       } catch(NumberFormatException e) {
-          return 10;
+          return defaultMaxComments;
       }
       return limit;
   } 
