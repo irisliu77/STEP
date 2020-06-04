@@ -54,11 +54,10 @@ const handleClickProject = function() {
     });
 }
 
-function getComments(max) {
+const getComments = function() {
     fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = '';
-        
         comments.forEach((Comment) => {
             commentsContainer.appendChild(createCommentElement(Comment));
         });
