@@ -38,7 +38,7 @@ public class DataServlet extends HttpServlet {
     private static final String timestampParameter = "timestamp";
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("Comment").addSort(timestampParameter, SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery res = datastore.prepare(query);
