@@ -69,7 +69,7 @@ function getComments(max) {
 function createCommentElement(comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
-    commentElement.innerText = comment.text;
+    commentElement.innerText = comment.content;
 
     return commentElement;
 }
