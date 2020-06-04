@@ -67,6 +67,6 @@ const getComments = function() {
 function createCommentElement(comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
-    commentElement.innerText = comment.key.kind;
+    commentElement.innerText = comment.content;
     return commentElement;
 }
