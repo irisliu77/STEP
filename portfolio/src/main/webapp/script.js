@@ -58,8 +58,8 @@ const getComments = function() {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = '';
         
-        for(let i = 0; i < comments.length; i++) {
-            commentsContainer.appendChild(createListElement('Comment: ' + comments[i]));
+        for(let comment of comments) {
+            commentsContainer.appendChild(createListElement('Comment: ' + comment));
         }
     });
 }
