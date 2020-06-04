@@ -34,8 +34,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-    private static final String content = "content";
-    private static final String timestamp = "timestamp";
+    private static final String contentParameter = "content";
+    private static final String timestampParameter = "timestamp";
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
@@ -45,8 +45,8 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for(Entity entity : res.asIterable()) {
-        String content = (String) entity.getProperty("content");
-        long timestamp = (long) entity.getProperty("timestamp");
+        String content = (String) entity.getProperty(contentParameter);
+        long timestamp = (long) entity.getProperty(timestampParameter);
 
         Comment comment = new Comment(content, timestamp);
         comments.add(comment);
@@ -59,12 +59,12 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String text = request.getParameter("comment-input");
-      long time = System.currentTimeMillis();
+      String content = request.getParameter("comment-input");
+      long timestamp = System.currentTimeMillis();
 
       Entity comment = new Entity("Comment");
-      comment.setProperty(content, text);
-      comment.setProperty(timestamp,time);
+      comment.setProperty(contentParameter, content);
+      comment.setProperty(timestampParameter, timestamp);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(comment);
