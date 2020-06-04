@@ -58,9 +58,9 @@ function getComments() {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = '';
         
-        comments.forEach((Comment) => {
-            commentsContainer.appendChild(createCommentElement(Comment));
-        });
+        for(let comment of comments) {
+            commentsContainer.appendChild(createCommentElement(comment));
+        };
     });
 }
 
@@ -69,12 +69,5 @@ function createCommentElement(comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
     commentElement.innerText = comment.key.kind;
-
     return commentElement;
-}
-
-const handleSubmitButton = function() {
-    $('#submit-button').click(function() {
-        getComments();
-    });
 }
