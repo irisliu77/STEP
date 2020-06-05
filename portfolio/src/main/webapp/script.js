@@ -24,6 +24,7 @@ $(document).ready(function() {
     handleClickProject();
 
     handleQuantityButton();
+    handleDeleteButton();
     getComments();
 });
 
@@ -44,7 +45,7 @@ const handleUnfilterButton = function() {
         $('#unfilter-button').css("display", "none");
         $('#photo-input').val('');
    });
-}
+};
     
 const handleClickProject = function() {
     $('.project-name').click(function() {
@@ -52,7 +53,7 @@ const handleClickProject = function() {
         const name = $(this).attr('id');
         $('#' + name + '-pic').css("display","inline");
     });
-}
+};
 
 const getComments = function(max) {
     fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
@@ -62,7 +63,7 @@ const getComments = function(max) {
             commentsContainer.appendChild(createCommentElement(comment));
         };
     });
-}
+};
 
 /** Creates an <li> element containing text. */
 const createCommentElement = function(comment) {
@@ -70,15 +71,24 @@ const createCommentElement = function(comment) {
     commentElement.className = 'comment';
     commentElement.innerText = comment.content;
     return commentElement;
-}
+};
 
 const handleQuantityButton = function() {
     $('#quantity-button').click(function() {
         let max = $('#quantity').val();
         getComments(max);
     });
+};
+
+const deleteAllComments = function() {
+  const request = new Request('/delete-data', {method: 'POST'});
+  fetch(request).then(response => {
+    getComments();
+  });
 }
-/*
-const deleteComments = function() {
-    fetch('/delete-data').then
-}*/
+
+const handleDeleteButton = function() {
+    $('#delete-button').click(function() {
+        deleteAllComments();
+    });
+};
