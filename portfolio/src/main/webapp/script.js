@@ -58,9 +58,9 @@ const getComments = function(max) {
     fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = ''; 
-        for(let comment of comments) {
+        for (let comment of comments) {
             commentsContainer.appendChild(createCommentElement(comment));
-        };
+        }
     });
 }
 
