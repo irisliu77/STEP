@@ -35,7 +35,7 @@ const handleFilterButton = function() {
         const input = $('#photo-input').val();
         $('.' + input).css("display","inline");
     });   
-}
+};
 
 const handleUnfilterButton = function() {
    $('#unfilter-button').on('click', function() {
@@ -44,7 +44,7 @@ const handleUnfilterButton = function() {
         $('#unfilter-button').css("display", "none");
         $('#photo-input').val('');
    });
-}
+};
     
 const handleClickProject = function() {
     $('.project-name').click(function() {
@@ -52,7 +52,7 @@ const handleClickProject = function() {
         const name = $(this).attr('id');
         $('#' + name + '-pic').css("display","inline");
     });
-}
+};
 
 const getComments = function(max) {
     fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
@@ -62,19 +62,19 @@ const getComments = function(max) {
             commentsContainer.appendChild(createCommentElement(comment));
         }
     });
-}
+};
 
 /** Creates an <li> element containing text. */
-function createCommentElement(comment) {
+const createCommentElement = function (comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
     commentElement.innerText = comment.content;
     return commentElement;
-}
+};
 
 const handleQuantityButton = function() {
     $('#quantity-button').click(function() {
         let max = $('#quantity').val();
         getComments(max);
     });
-}
+};

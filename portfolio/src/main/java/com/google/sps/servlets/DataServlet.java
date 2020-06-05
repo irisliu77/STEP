@@ -32,10 +32,11 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-    private static final String content = "content";
-    private static final String timestamp = "timestamp";
+    private static final String CONTENT_PARAMETER = "content";
+    private static final String TIMESTAMP_PARAMETER = "timestamp";
     private static final String COMMENT_PARAMETER = "Comment";
-    private static final int defaultMaxComments = 10;
+    private static final int DEFAULT_MAX_COMMENTS = 10;
+    
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
       Gson gson = new Gson();
@@ -48,17 +49,16 @@ public class DataServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String text = request.getParameter("comment-input");
-        long time = System.currentTimeMillis();
+        String content = request.getParameter("comment-input");
+        long timestamp = System.currentTimeMillis();
 
-        Entity comment = new Entity("Comment");
-        comment.setProperty(content, text);
-        comment.setProperty(timestamp,time);
+        Entity comment = new Entity(COMMENT_PARAMETER);
+        comment.setProperty(CONTENT_PARAMETER, content);
+        comment.setProperty(TIMESTAMP_PARAMETER, timestamp);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(comment);
-        int max = getRequestNum(request);  
-        response.sendRedirect("/index.html?limit=" + max);
+        response.sendRedirect("/index.html");
     }
 
     private int getRequestNum(HttpServletRequest request) {
@@ -67,23 +67,23 @@ public class DataServlet extends HttpServlet {
         try {
             limit = Integer.parseInt(limitString);
         } catch(NumberFormatException e) {
-            return defaultMaxComments;
+            limit = DEFAULT_MAX_COMMENTS;
         }
         return limit;
     } 
 
     private ArrayList<Comment> getComments(int limit) {
-        Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+        Query query = new Query("Comment").addSort(TIMESTAMP_PARAMETER, SortDirection.DESCENDING);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery res = datastore.prepare(query);
 
-        ArrayList<Comment> comments = new ArrayList<Comment>();
+        ArrayList<Comment> comments = new ArrayList<>();
         for(Entity entity : res.asIterable()) {
-            String content = (String) entity.getProperty("content");
-            long timestamp = (long) entity.getProperty("timestamp");
+            String content = (String) entity.getProperty(CONTENT_PARAMETER);
+            long timestamp = (long) entity.getProperty(TIMESTAMP_PARAMETER);
             Comment comment = new Comment(content, timestamp);
             comments.add(comment);
-            if(comments.size() > limit) {
+            if(comments.size() >= limit) {
                 break;
             }
         }
