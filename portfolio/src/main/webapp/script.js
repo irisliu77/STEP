@@ -85,7 +85,7 @@ const deleteAllComments = function() {
   fetch(request).then(response => {
     getComments();
   });
-}
+};
 
 const handleDeleteButton = function() {
     $('#delete-button').click(function() {
