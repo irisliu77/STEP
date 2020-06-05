@@ -36,7 +36,7 @@ const handleFilterButton = function() {
         const input = $('#photo-input').val();
         $('.' + input).css("display","inline");
     });   
-}
+};
 
 const handleUnfilterButton = function() {
    $('#unfilter-button').on('click', function() {
@@ -59,9 +59,9 @@ const getComments = function(max) {
     fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
         const commentsContainer = document.getElementById('comments-container');
         commentsContainer.innerHTML = ''; 
-        for(let comment of comments) {
+        for (let comment of comments) {
             commentsContainer.appendChild(createCommentElement(comment));
-        };
+        }
     });
 };
 
