@@ -29,46 +29,64 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private static final String CONTENT_PARAMETER = "content";
-  private static final String TIMESTAMP_PARAMETER = "timestamp";
-  private static final String COMMENT_PARAMETER = "Comment";
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort(TIMESTAMP_PARAMETER, SortDirection.DESCENDING);
+    private static final String CONTENT_PARAMETER = "content";
+    private static final String TIMESTAMP_PARAMETER = "timestamp";
+    private static final String COMMENT_PARAMETER = "Comment";
+    private static final int DEFAULT_MAX_COMMENTS = 10;
+    
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson = new Gson();
+        int limit = getRequestNum(request);
+        List<Comment> comments = getComments(limit);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery res = datastore.prepare(query);
-
-    List<Comment> comments = new ArrayList<>();
-    for(Entity entity : res.asIterable()) {
-        String content = (String) entity.getProperty(CONTENT_PARAMETER);
-        long timestamp = (long) entity.getProperty(TIMESTAMP_PARAMETER);
-
-        Comment comment = new Comment(content, timestamp);
-        comments.add(comment);
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(comments));
     }
-    Gson gson = new Gson();
 
-    response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(comments));
-  }
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String content = request.getParameter("comment-input");
+        long timestamp = System.currentTimeMillis();
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String content = request.getParameter("comment-input");
-    long timestamp = System.currentTimeMillis();
+        Entity comment = new Entity(COMMENT_PARAMETER);
+        comment.setProperty(CONTENT_PARAMETER, content);
+        comment.setProperty(TIMESTAMP_PARAMETER, timestamp);
 
-    Entity comment = new Entity(COMMENT_PARAMETER);
-    comment.setProperty(CONTENT_PARAMETER, content);
-    comment.setProperty(TIMESTAMP_PARAMETER, timestamp);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(comment);
+        response.sendRedirect("/index.html");
+    }
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(comment);
+    private int getRequestNum(HttpServletRequest request) {
+        String limitString = request.getParameter("limit");
+        int limit;
+        try {
+            limit = Integer.parseInt(limitString);
+        } catch(NumberFormatException e) {
+            limit = DEFAULT_MAX_COMMENTS;
+        }
+        return limit;
+    } 
 
-    response.sendRedirect("/index.html");
-  }
+    private ArrayList<Comment> getComments(int limit) {
+        Query query = new Query("Comment").addSort(TIMESTAMP_PARAMETER, SortDirection.DESCENDING);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery res = datastore.prepare(query);
+
+        List<Comment> comments = new ArrayList<>();
+        for(Entity entity : res.asIterable()) {
+            String content = (String) entity.getProperty(CONTENT_PARAMETER);
+            long timestamp = (long) entity.getProperty(TIMESTAMP_PARAMETER);
+            Comment comment = new Comment(content, timestamp);
+            comments.add(comment);
+            if(comments.size() >= limit) {
+                break;
+            }
+        }
+        return comments;
+    }
 }

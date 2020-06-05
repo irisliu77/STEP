@@ -54,11 +54,16 @@
                             <p class="self-introduction">Welcome to my personal website. I hope you find this site helpful and inspiring. And feel free to contact me anytime</p>
                         </div>
                         <div>
+                            <label for="quantity">Number of comments:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" max="20">
+                            <button class="button" id="quantity-button">Enter</button>
+                            <ul id="comments-container"></ul>
+                        </div>
+                        <div>
                             <form action="/data" method="POST">
                                 <textarea class="textarea" id="comment-input" name="comment-input" placeholder="Enter your comment..."></textarea>
                                 <input class="button" id="submit-button" type="submit">
                             </form>
-                            <ul id="comments-container"></ul>
                         </div>
                     </div>
                 </div>
