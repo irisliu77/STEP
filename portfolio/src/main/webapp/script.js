@@ -65,7 +65,7 @@ const getComments = function(max) {
 };
 
 /** Creates an <li> element containing text. */
-const createCommentElement = function (comment) {
+const createCommentElement = function(comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
     commentElement.innerText = comment.content;

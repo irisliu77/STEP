@@ -41,7 +41,7 @@ public class DataServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
         int limit = getRequestNum(request);
-        ArrayList<Comment> comments = getComments(limit);
+        List<Comment> comments = getComments(limit);
 
         response.setContentType("application/json;");
         response.getWriter().println(gson.toJson(comments));
@@ -77,7 +77,7 @@ public class DataServlet extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery res = datastore.prepare(query);
 
-        ArrayList<Comment> comments = new ArrayList<>();
+        List<Comment> comments = new ArrayList<>();
         for(Entity entity : res.asIterable()) {
             String content = (String) entity.getProperty(CONTENT_PARAMETER);
             long timestamp = (long) entity.getProperty(TIMESTAMP_PARAMETER);
@@ -87,6 +87,6 @@ public class DataServlet extends HttpServlet {
                 break;
             }
         }
-    return comments;
+        return comments;
     }
 }
