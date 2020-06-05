@@ -22,7 +22,7 @@ $(document).ready(function() {
     $('#job-pic').css("display","none");
     $('#mmr-pic').css("display","none");
     handleClickProject();
-    
+
     getComments();
 });
 
@@ -56,17 +56,17 @@ const handleClickProject = function() {
 const getComments = function() {
     fetch('/data').then(response => response.json()).then((comments) => {
         const commentsContainer = document.getElementById('comments-container');
-        commentsContainer.innerHTML = '';
-        
-        for(let comment of comments) {
-            commentsContainer.appendChild(createListElement('Comment: ' + comment));
+        commentsContainer.innerHTML = ''; 
+        for (let comment of comments) {
+            commentsContainer.appendChild(createCommentElement(comment));
         }
     });
 }
 
 /** Creates an <li> element containing text. */
-const createListElement = function(text) {
-    const liElement = document.createElement('li');
-    liElement.innerText = text;
-    return liElement;
+function createCommentElement(comment) {
+    const commentElement = document.createElement('li');
+    commentElement.className = 'comment';
+    commentElement.innerText = comment.content;
+    return commentElement;
 }
