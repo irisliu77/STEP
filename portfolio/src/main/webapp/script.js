@@ -81,10 +81,10 @@ const handleQuantityButton = function() {
 };
 
 const deleteAllComments = function() {
-  const request = new Request('/delete-data', {method: 'POST'});
-  fetch(request).then(response => {
-    getComments();
-  });
+    const request = new Request('/delete-data', {method: 'POST'});
+    fetch(request).then(response => {
+        getComments();
+    });
 };
 
 const handleDeleteButton = function() {
