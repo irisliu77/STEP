@@ -72,7 +72,7 @@ public class DataServlet extends HttpServlet {
         return limit;
     } 
 
-    private ArrayList<Comment> getComments(int limit) {
+    private List<Comment> getComments(int limit) {
         Query query = new Query("Comment").addSort(TIMESTAMP_PARAMETER, SortDirection.DESCENDING);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery res = datastore.prepare(query);
