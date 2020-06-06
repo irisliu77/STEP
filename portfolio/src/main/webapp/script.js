@@ -24,6 +24,7 @@ $(document).ready(function() {
     handleClickProject();
 
     handleQuantityButton();
+    handleDeleteButton();
     getComments();
 });
 
@@ -76,5 +77,18 @@ const handleQuantityButton = function() {
     $('#quantity-button').click(function() {
         let max = $('#quantity').val();
         getComments(max);
+    });
+};
+
+const deleteAllComments = function() {
+    const request = new Request('/delete-data', {method: 'POST'});
+    fetch(request).then(response => {
+        getComments();
+    });
+};
+
+const handleDeleteButton = function() {
+    $('#delete-button').click(function() {
+        deleteAllComments();
     });
 };
