@@ -16,16 +16,18 @@ $(document).ready(function() {
     $('#unfilter-button').css("display","none");
     handleFilterButton();
     handleUnfilterButton();
-  
+    
     $('#2048-pic').css("display","none");
     $('#tweeter-pic').css("display","none");
     $('#job-pic').css("display","none");
     $('#mmr-pic').css("display","none");
     handleClickProject();
-
+    //enable comment function in main page
     handleQuantityButton();
     handleDeleteButton();
     getComments();
+    //enable photo uplado function in photo page
+    fetchBlobstoreUrlAndShowForm();
 });
 
 const handleFilterButton = function() {
@@ -90,5 +92,16 @@ const deleteAllComments = function() {
 const handleDeleteButton = function() {
     $('#delete-button').click(function() {
         deleteAllComments();
+    });
+};
+
+const fetchBlobstoreUrlAndShowForm = function() {
+    fetch("/blobstore-upload-url").then((response) => {
+        return response.text();
+    }).then((imageUploadUrl) => {
+        const photoForm = document.getElementById('photo-upload-form');
+        photoForm.action = imageUploadUrl;
+        photoForm.classList.remove('hidden');
+        console.log(imageUploadUrl);
     });
 };
