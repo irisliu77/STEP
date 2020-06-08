@@ -19,15 +19,22 @@ import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.gson.Gson;
+import com.google.sps.data.Post;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,18 +44,30 @@ import javax.servlet.http.HttpServletResponse;
 public class PhotoFormHandlerServlet extends HttpServlet {
     private static final String MESSAGE_PARAMETER = "message";
     private static final String IMAGE_PARAMETER = "image";
-
+    private static final String POST_PARAMETER = "Post";
+    private static final String URL_PARAMETER = "url";
+    
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String message = request.getParameter(MESSAGE_PARAMETER);
         String imageUrl = getUploadedFileUrl(request, IMAGE_PARAMETER);
-        PrintWriter out = response.getWriter();
-        out.println("<p>Here's the image you uploaded:</p>");
-        out.println("<a href=\"" + imageUrl + "\">");
-        out.println("<img src=\"" + imageUrl + "\" />");
-        out.println("</a>");
-        out.println("<p>Here's the text you entered:</p>");
-        out.println(message);
+
+        Entity post = new Entity(POST_PARAMETER);
+        post.setProperty(MESSAGE_PARAMETER, message);
+        post.setProperty(URL_PARAMETER, imageUrl);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(post);
+        response.sendRedirect("/photo.html");
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson = new Gson();
+        
+        List<Post> posts = getPosts();
+
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(posts));
     }
 
     private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
@@ -78,5 +97,20 @@ public class PhotoFormHandlerServlet extends HttpServlet {
         } catch (MalformedURLException e) {
             return imagesService.getServingUrl(options);
         }
+    }
+
+    private List<Post> getPosts() {
+        Query query = new Query(POST_PARAMETER);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery res = datastore.prepare(query);
+
+        List<Post> posts = new ArrayList<>();
+        for(Entity entity : res.asIterable()) {
+            String message = (String) entity.getProperty(MESSAGE_PARAMETER);
+            String url = (String) entity.getProperty(URL_PARAMETER);
+            Post post = new Post(message, url);
+            posts.add(post);
+        }
+        return posts;
     }
 }

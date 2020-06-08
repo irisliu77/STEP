@@ -28,6 +28,7 @@ $(document).ready(function() {
     getComments();
     //enable photo uplado function in photo page
     fetchBlobstoreUrlAndShowForm();
+    fetchPhotoFormHandler();
 });
 
 const handleFilterButton = function() {
@@ -103,5 +104,13 @@ const fetchBlobstoreUrlAndShowForm = function() {
         photoForm.action = imageUploadUrl;
         photoForm.classList.remove('hidden');
         console.log(imageUploadUrl);
+    });
+};
+
+const fetchPhotoFormHandler = function() {
+    fetch("/photo-form-handler").then(response => response.json()).then((posts) => {
+        for(let post of posts) {
+            $('#photo-container').append('<div class="photo"><p>' + post.message + '</p><img src="' + post.url + '"/></div>');
+        }
     });
 };
