@@ -18,10 +18,6 @@ $(document).ready(function() {
     $('#job-pic').css("display","none");
     $('#mmr-pic').css("display","none");
     handleClickProject();
-    // Enable comment function in main page
-    handleQuantityButton();
-    handleDeleteButton();
-    getComments();
 });
     
 const handleClickProject = function() {
@@ -29,43 +25,5 @@ const handleClickProject = function() {
         $('.project-pic').css("display","none");
         const name = $(this).attr('id');
         $('#' + name + '-pic').css("display","inline");
-    });
-};
-
-const getComments = function(max) {
-    fetch('/data?limit=' + max).then(response => response.json()).then((comments) => {
-        const commentsContainer = document.getElementById('comments-container');
-        commentsContainer.innerHTML = ''; 
-        for (let comment of comments) {
-            commentsContainer.appendChild(createCommentElement(comment));
-        }
-    });
-};
-
-/** Creates an <li> element containing text. */
-const createCommentElement = function(comment) {
-    const commentElement = document.createElement('li');
-    commentElement.className = 'comment';
-    commentElement.innerText = comment.content;
-    return commentElement;
-};
-
-const handleQuantityButton = function() {
-    $('#quantity-button').click(function() {
-        let max = $('#quantity').val();
-        getComments(max);
-    });
-};
-
-const deleteAllComments = function() {
-    const request = new Request('/delete-data', {method: 'POST'});
-    fetch(request).then(response => {
-        getComments();
-    });
-};
-
-const handleDeleteButton = function() {
-    $('#delete-button').click(function() {
-        deleteAllComments();
     });
 };
