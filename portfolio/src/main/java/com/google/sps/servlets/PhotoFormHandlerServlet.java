@@ -46,15 +46,18 @@ public class PhotoFormHandlerServlet extends HttpServlet {
     private static final String IMAGE_PARAMETER = "image";
     private static final String POST_PARAMETER = "Post";
     private static final String URL_PARAMETER = "url";
-    
+    private static final String DISPLAY_PARAMETER = "display";
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String message = request.getParameter(MESSAGE_PARAMETER);
         String imageUrl = getUploadedFileUrl(request, IMAGE_PARAMETER);
+        String display = request.getParameter(DISPLAY_PARAMETER);
 
         Entity post = new Entity(POST_PARAMETER);
         post.setProperty(MESSAGE_PARAMETER, message);
         post.setProperty(URL_PARAMETER, imageUrl);
+        post.setProperty(DISPLAY_PARAMETER, display);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(post);
         response.sendRedirect("/photo.html");
@@ -108,7 +111,8 @@ public class PhotoFormHandlerServlet extends HttpServlet {
         for(Entity entity : res.asIterable()) {
             String message = (String) entity.getProperty(MESSAGE_PARAMETER);
             String url = (String) entity.getProperty(URL_PARAMETER);
-            Post post = new Post(message, url);
+            String display = (String) entity.getProperty(DISPLAY_PARAMETER);
+            Post post = new Post(message, url, display);
             posts.add(post);
         }
         return posts;

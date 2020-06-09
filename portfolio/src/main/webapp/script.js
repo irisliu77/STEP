@@ -110,7 +110,7 @@ const fetchBlobstoreUrlAndShowForm = function() {
 const fetchPhotoFormHandler = function() {
     fetch("/photo-form-handler").then(response => response.json()).then((posts) => {
         for(let post of posts) {
-            $('#photo-container').append('<div class="photo"><p>' + post.message + '</p><img src="' + post.url + '"/></div>');
+            $('#photo-container').append('<div class="photo ' + post.display.toLowerCase() + '"><p>' + post.message + '</p><img src="' + post.url + '"/></div>');
         }
     });
 };
