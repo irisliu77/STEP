@@ -13,9 +13,6 @@
 // limitations under the License.
 
 $(document).ready(function() {
-    $('#unfilter-button').css("display","none");
-    handleFilterButton();
-    handleUnfilterButton();
     $('#2048-pic').css("display","none");
     $('#tweeter-pic').css("display","none");
     $('#job-pic').css("display","none");
@@ -25,29 +22,7 @@ $(document).ready(function() {
     handleQuantityButton();
     handleDeleteButton();
     getComments();
-    // Enable photo uplaod function in photo page
-    fetchBlobstoreUrlAndShowForm();
-    fetchPhotoFormHandler();
 });
-
-const handleFilterButton = function() {
-    $('#filter-button').on('click',function() {
-        $('.photo').css("display","none");
-        $('#filter-button').css("display", "none");
-        $('#unfilter-button').css("display", "inline");
-        const input = $('#photo-input').val();
-        $('.' + input).css("display","inline");
-    });   
-};
-
-const handleUnfilterButton = function() {
-   $('#unfilter-button').on('click', function() {
-        $('.photo').css("display", "inline");
-        $('#filter-button').css("display", "inline");
-        $('#unfilter-button').css("display", "none");
-        $('#photo-input').val('');
-   });
-};
     
 const handleClickProject = function() {
     $('.project-name').click(function() {
@@ -92,23 +67,5 @@ const deleteAllComments = function() {
 const handleDeleteButton = function() {
     $('#delete-button').click(function() {
         deleteAllComments();
-    });
-};
-
-const fetchBlobstoreUrlAndShowForm = function() {
-    fetch("/blobstore-upload-url").then((response) => {
-        return response.text();
-    }).then((imageUploadUrl) => {
-        const photoForm = document.getElementById('photo-upload-form');
-        photoForm.action = imageUploadUrl;
-        photoForm.classList.remove('hidden');
-    });
-};
-
-const fetchPhotoFormHandler = function() {
-    fetch("/photo-form-handler").then(response => response.json()).then((posts) => {
-        for(let post of posts) {
-            $('#photo-container').append('<div class="photo ' + post.display.toLowerCase()   + '"><p>' + post.message + '</p><img src="' + post.url + '"/></div>');
-        }
     });
 };
