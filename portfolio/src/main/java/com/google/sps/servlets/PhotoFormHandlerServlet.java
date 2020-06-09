@@ -79,7 +79,7 @@ public class PhotoFormHandlerServlet extends HttpServlet {
         List<BlobKey> blobKeys = blobs.get(IMAGE_PARAMETER);
 
         // User submitted form without selecting a file, so we can't get a URL. (devserver)
-        if(blobKeys == null || blobKeys.isEmpty()) {
+        if (blobKeys == null || blobKeys.isEmpty()) {
             return null;
         }
 

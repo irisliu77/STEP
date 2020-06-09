@@ -16,17 +16,16 @@ $(document).ready(function() {
     $('#unfilter-button').css("display","none");
     handleFilterButton();
     handleUnfilterButton();
-    
     $('#2048-pic').css("display","none");
     $('#tweeter-pic').css("display","none");
     $('#job-pic').css("display","none");
     $('#mmr-pic').css("display","none");
     handleClickProject();
-    //enable comment function in main page
+    // Enable comment function in main page
     handleQuantityButton();
     handleDeleteButton();
     getComments();
-    //enable photo uplado function in photo page
+    // Enable photo uplaod function in photo page
     fetchBlobstoreUrlAndShowForm();
     fetchPhotoFormHandler();
 });
