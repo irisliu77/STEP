@@ -71,13 +71,12 @@ const initMap = function() {
 
 /** Adds a marker that shows an info window when clicked. */
 const addLandmark = function(map, lat, lng, title, description) {
-  const marker = new google.maps.Marker(
-      {position: {lat: lat, lng: lng}, map: map, title: title});
+    const marker = new google.maps.Marker(
+                    {position: {lat: lat, lng: lng}, map: map, title: title});
 
-  const infoWindow = new google.maps.InfoWindow({content: description});
-  marker.addListener('click', () => {
-    infoWindow.open(map, marker);
-  });
-
-  $('#place-list').append('<li>' + title + '</li>');
+    const infoWindow = new google.maps.InfoWindow({content: description});
+    marker.addListener('click', () => {
+        infoWindow.open(map, marker);
+    });
+    $('#place-list').append('<li>' + title + '</li>');
 }
