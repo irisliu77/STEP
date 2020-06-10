@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="style.css" />
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="script.js"></script>
+        <script src="photoScript.js"></script>
     </head>
     <body>
         <section class="hero is-light is-large">
@@ -53,7 +53,7 @@
                                 <button class="button" id="unfilter-button">Unfilter</button>
                             </div>
                         </div>
-                        <div class="grid-container">
+                        <div class="grid-container" id="photo-container">
                             <div class="photo portrait"><img src="images/photo/1.JPG"/></div>
                             <div class="photo portrait"><img src="images/photo/2.JPG"/></div>
                             <div class="photo portrait"><img src="images/photo/3.JPG"/></div>
@@ -70,6 +70,34 @@
                             <div class="photo arts"><img src="images/photo/14.JPG"/></div>
                             <div class="big photo nature"><img src="images/photo/15.JPG"/></div>
                             <div class="photo arts"><img src="images/photo/16.JPG"/></div>
+                        </div>
+                        <div>
+                            <form id="photo-upload-form" class="hidden" method="POST" enctype="multipart/form-data">
+                                <p>Type some text:</p>
+                                <textarea class="textarea" name="message" placeholder="Enter your photo description here..."></textarea>
+                                <p>Upload an image:</p>
+                                <div id="upload-section" class="file has-name">
+                                    <label class="file-label">
+                                        <input class="file-input" type="file" name="image">
+                                        <span class="file-cta">
+                                            <span class="file-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </span>
+                                            <span class="file-label">
+                                                Choose a file…
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <input class="button" type="submit" value="Submit">
+                                <div class="select">
+                                    <select name="display">
+                                        <option>Vertical</option>
+                                        <option>Horizontal</option>
+                                        <option>Big</option>
+                                    </select>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
