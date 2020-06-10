@@ -16,7 +16,7 @@ $(document).ready(function() {
     $('#unfilter-button').css("display","none");
     handleFilterButton();
     handleUnfilterButton();
-    // Enable photo uplaod function in photo page
+    // Enable photo upload function in photo page
     fetchBlobstoreUrlAndShowForm();
     fetchPhotoFormHandler();
 });
@@ -52,11 +52,11 @@ const fetchBlobstoreUrlAndShowForm = function() {
 
 const fetchPhotoFormHandler = function() {
     fetch("/photo-form-handler").then(response => response.json()).then((posts) => {
-        for(let post of posts) {
+        for (let post of posts) {
             $('#photo-container').append(
                                         '<div class="photo ' + post.display.toLowerCase() + '">' + 
                                         '<p>' + post.message + '</p>' + 
-                                        '<img src="' + post.url + '"/></div>');
+                                        '<img src="' + post.url + '"></div>');
         }
     });
 };

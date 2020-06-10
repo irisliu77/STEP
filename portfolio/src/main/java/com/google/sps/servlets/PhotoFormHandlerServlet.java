@@ -52,6 +52,9 @@ public class PhotoFormHandlerServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String message = request.getParameter(MESSAGE_PARAMETER);
         String imageUrl = getUploadedFileUrl(request, IMAGE_PARAMETER);
+        if(imageUrl == null) {
+            response.sendRedirect("/photo.html");
+        }
         String display = request.getParameter(DISPLAY_PARAMETER);
 
         Entity post = new Entity(POST_PARAMETER);
@@ -76,7 +79,7 @@ public class PhotoFormHandlerServlet extends HttpServlet {
     private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
         BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
         Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
-        List<BlobKey> blobKeys = blobs.get(IMAGE_PARAMETER);
+        List<BlobKey> blobKeys = blobs.get(formInputElementName);
 
         // User submitted form without selecting a file, so we can't get a URL. (devserver)
         if (blobKeys == null || blobKeys.isEmpty()) {

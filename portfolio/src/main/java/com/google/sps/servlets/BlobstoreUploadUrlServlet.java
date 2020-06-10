@@ -30,7 +30,7 @@ public class BlobstoreUploadUrlServlet extends HttpServlet {
         BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
         String uploadUrl = blobstoreService.createUploadUrl("/photo-form-handler");
 
-        response.setContentType("text/html");
+        response.setContentType("text/plain");
         response.getOutputStream().println(uploadUrl);
     }
 }
