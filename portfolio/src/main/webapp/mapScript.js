@@ -59,24 +59,96 @@ const handleDeleteButton = function() {
     });
 };
 
+let map;
+
+/* Editable marker that displays when a user clicks in the map. */
+let editMarker;
+
 const initMap = function() {
     const unc = {lat: 35.905112, lng: -79.046892}
-    const map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
     center: unc,
     zoom: 14
   });
-    addLandmark(map, 35.912533, -79.058543, 
-                'Lime & Basil', 'Lime & Basil provides delicious Vietnamese Pho.');     
+
+    map.addListener('click', (event) => {
+        createMarkerForEdit(event.latLng.lat(), event.latLng.lng());
+    });
+
+    fetchMarkers();
 }
 
-/** Adds a marker that shows an info window when clicked. */
-const addLandmark = function(map, lat, lng, title, description) {
-    const marker = new google.maps.Marker(
-                    {position: {lat: lat, lng: lng}, map: map, title: title});
+/** Fetches markers from the backend and adds them to the map. */
+const fetchMarkers = function() {
+    fetch('/markers').then(response => response.json()).then((markers) => {
+        markers.forEach((marker) => {
+            createMarkerForDisplay(marker.lat, marker.lng, marker.title, marker.description);
+            $('#place-list').append('<li>' + marker.title + '</li>');
+        });
+    });
+}
 
-    const infoWindow = new google.maps.InfoWindow({content: description});
+/** Creates a marker that shows a read-only info window when clicked. */
+const createMarkerForDisplay = function(lat, lng, title, description) {
+    const marker = new google.maps.Marker({position: {lat: lat, lng: lng}, map: map, title: title});
+    const content = '<div><h1>'+ title +'</h1></div>' + 
+                    '<div><p>' + description + '</p></div>';
+    const infoWindow = new google.maps.InfoWindow({content: content});
     marker.addListener('click', () => {
         infoWindow.open(map, marker);
     });
-    $('#place-list').append('<li>' + title + '</li>');
 }
+
+/** Sends a marker to the backend for saving. */
+const postMarker = function(lat, lng, title, description) {
+    const params = new URLSearchParams();
+    params.append('lat', lat);
+    params.append('lng', lng);
+    params.append('title', title);
+    params.append('description', description);
+
+    fetch('/markers', {method: 'POST', body: params});
+}
+
+/** Creates a marker that shows a textbox the user can edit. */
+createMarkerForEdit = function(lat, lng) {
+    // If we're already showing an editable marker, then remove it.
+    if (editMarker) {
+        editMarker.setMap(null);
+    }
+
+    editMarker = new google.maps.Marker({position: {lat: lat, lng: lng}, map: map});
+    const infoWindow = new google.maps.InfoWindow({content: buildInfoWindowInput(lat, lng)});
+
+    // When the user closes the editable info window, remove the marker.
+    google.maps.event.addListener(infoWindow, 'closeclick', () => {
+        editMarker.setMap(null);
+    });
+    infoWindow.open(map, editMarker);
+}
+
+/**
+ * Builds and returns HTML elements that show an editable textbox and a submit
+ * button.
+ */
+const buildInfoWindowInput = function(lat, lng) {
+    const title = document.createElement('input');
+    const description = document.createElement('textarea');
+    const button = document.createElement('button');
+    button.appendChild(document.createTextNode('Submit'));
+
+    button.onclick = () => {
+        postMarker(lat, lng, title.value, description.value);
+        createMarkerForDisplay(lat, lng, title.value, description.value);
+        editMarker.setMap(null);
+    };
+
+    const containerDiv = document.createElement('div');
+    containerDiv.appendChild(title);
+    containerDiv.appendChild(description);
+    containerDiv.appendChild(document.createElement('br'));
+    containerDiv.appendChild(button);
+    
+    return containerDiv;
+}
+
