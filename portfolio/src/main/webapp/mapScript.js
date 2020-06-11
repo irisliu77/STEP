@@ -149,7 +149,6 @@ const buildInfoWindowInput = function(lat, lng) {
     const containerDiv = document.createElement('div');
     containerDiv.appendChild(title);
     containerDiv.appendChild(description);
-    containerDiv.appendChild(document.createElement('br'));
     containerDiv.appendChild(button);
     
     return containerDiv;
