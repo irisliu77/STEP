@@ -117,3 +117,7 @@
   height: 500px;
   width: 500px;
 }
+
+#title-input, #description-input {
+    margin-bottom: 5px;
+}

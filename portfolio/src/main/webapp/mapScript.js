@@ -67,32 +67,28 @@ let editMarker;
 const initMap = function() {
     const unc = {lat: 35.905112, lng: -79.046892}
     map = new google.maps.Map(document.getElementById("map"), {
-    center: unc,
-    zoom: 14
-  });
+        center: unc,
+        zoom: 14
+    });
 
     map.addListener('click', (event) => {
         createMarkerForEdit(event.latLng.lat(), event.latLng.lng());
     });
-
-    fetchMarkers();
-}
-
-/** Fetches markers from the backend and adds them to the map. */
-const fetchMarkers = function() {
+    /** Fetches markers from datastore */
     fetch('/markers').then(response => response.json()).then((markers) => {
-        markers.forEach((marker) => {
+        for (let marker of markers) {
             createMarkerForDisplay(marker.lat, marker.lng, marker.title, marker.description);
-            $('#place-list').append('<li>' + marker.title + '</li>');
-        });
+        }
     });
 }
+
 
 /** Creates a marker that shows a read-only info window when clicked. */
 const createMarkerForDisplay = function(lat, lng, title, description) {
     const marker = new google.maps.Marker({position: {lat: lat, lng: lng}, map: map, title: title});
     const content = '<div><h1>'+ title +'</h1></div>' + 
                     '<div><p>' + description + '</p></div>';
+    $('#place-list').append('<li>' + marker.title + '</li>');
     const infoWindow = new google.maps.InfoWindow({content: content});
     marker.addListener('click', () => {
         infoWindow.open(map, marker);
@@ -106,12 +102,15 @@ const postMarker = function(lat, lng, title, description) {
     params.append('lng', lng);
     params.append('title', title);
     params.append('description', description);
-
+    if(title.value == "" || description.value == "") {
+        alert("You have entered invalid input");
+        return false;
+    }
     fetch('/markers', {method: 'POST', body: params});
 }
 
 /** Creates a marker that shows a textbox the user can edit. */
-createMarkerForEdit = function(lat, lng) {
+const createMarkerForEdit = function(lat, lng) {
     // If we're already showing an editable marker, then remove it.
     if (editMarker) {
         editMarker.setMap(null);
@@ -133,16 +132,21 @@ createMarkerForEdit = function(lat, lng) {
  */
 const buildInfoWindowInput = function(lat, lng) {
     const title = document.createElement('input');
+    title.setAttribute("placeholder", "Title")
+    title.setAttribute("id", "title-input");
     const description = document.createElement('textarea');
+    description.setAttribute("placeholder", "Description");
+    description.setAttribute("id", "description-input");
     const button = document.createElement('button');
     button.appendChild(document.createTextNode('Submit'));
 
-    button.onclick = () => {
-        postMarker(lat, lng, title.value, description.value);
-        createMarkerForDisplay(lat, lng, title.value, description.value);
+    button.addEventListener('click', function() {
+        const res = postMarker(lat, lng, title.value, description.value); 
+        if(res != false) {
+            createMarkerForDisplay(lat, lng, title.value, description.value);
+        }
         editMarker.setMap(null);
-    };
-
+    });
     const containerDiv = document.createElement('div');
     containerDiv.appendChild(title);
     containerDiv.appendChild(description);
@@ -151,4 +155,3 @@ const buildInfoWindowInput = function(lat, lng) {
     
     return containerDiv;
 }
-

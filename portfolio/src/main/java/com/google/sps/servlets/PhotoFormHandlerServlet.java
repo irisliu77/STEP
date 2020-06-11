@@ -84,7 +84,6 @@ public class PhotoFormHandlerServlet extends HttpServlet {
         }
 
         BlobKey blobKey = blobKeys.get(0);
-
         // User submitted form without selecting a file, so we can't get a URL. (live server)
         BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
         if (blobInfo.getSize() == 0) {

@@ -34,6 +34,11 @@ import org.jsoup.safety.Whitelist;
 /** Handles fetching and saving markers data. */
 @WebServlet("/markers")
 public class MarkerServlet extends HttpServlet {
+  private static final String LAT_PARAMETER = "lat";
+  private static final String LNG_PARAMETER = "lng";
+  private static final String TITLE_PARAMETER = "title";
+  private static final String DESCRIPTION_PARAMETER = "description";
+  private static final String MARKER_PARAMETER = "Marker";
 
   /** Responds with a JSON array containing marker data. */
   @Override
@@ -50,10 +55,11 @@ public class MarkerServlet extends HttpServlet {
   /** Accepts a POST request containing a new marker. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) {
-    double lat = Double.parseDouble(request.getParameter("lat"));
-    double lng = Double.parseDouble(request.getParameter("lng"));
-    String title = Jsoup.clean(request.getParameter("title"), Whitelist.none());
-    String description = Jsoup.clean(request.getParameter("description"), Whitelist.none());
+    double lat = Double.parseDouble(request.getParameter(LAT_PARAMETER));
+    double lng = Double.parseDouble(request.getParameter(LNG_PARAMETER));
+    String title = Jsoup.clean(request.getParameter(TITLE_PARAMETER), Whitelist.none());
+    String description = Jsoup.clean(request.getParameter(DESCRIPTION_PARAMETER), Whitelist.none());
+    
     Marker marker = new Marker(lat, lng, title, description);
     storeMarker(marker);
   }
@@ -63,14 +69,14 @@ public class MarkerServlet extends HttpServlet {
     Collection<Marker> markers = new ArrayList<>();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("Marker");
+    Query query = new Query(MARKER_PARAMETER);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
-      double lat = (double) entity.getProperty("lat");
-      double lng = (double) entity.getProperty("lng");
-      String title = (String) entity.getProperty("title");
-      String description = (String) entity.getProperty("description");
+      double lat = (double) entity.getProperty(LAT_PARAMETER);
+      double lng = (double) entity.getProperty(LNG_PARAMETER);
+      String title = (String) entity.getProperty(TITLE_PARAMETER);
+      String description = (String) entity.getProperty(DESCRIPTION_PARAMETER);
 
       Marker marker = new Marker(lat, lng, title, description);
       markers.add(marker);
@@ -80,11 +86,11 @@ public class MarkerServlet extends HttpServlet {
 
   /** Stores a marker in Datastore. */
   public void storeMarker(Marker marker) {
-    Entity markerEntity = new Entity("Marker");
-    markerEntity.setProperty("lat", marker.getLat());
-    markerEntity.setProperty("lng", marker.getLng());
-    markerEntity.setProperty("title", marker.getTitle());
-    markerEntity.setProperty("description", marker.getDescription());
+    Entity markerEntity = new Entity(MARKER_PARAMETER);
+    markerEntity.setProperty(LAT_PARAMETER, marker.getLat());
+    markerEntity.setProperty(LNG_PARAMETER, marker.getLng());
+    markerEntity.setProperty(TITLE_PARAMETER, marker.getTitle());
+    markerEntity.setProperty(DESCRIPTION_PARAMETER, marker.getDescription());
 
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
