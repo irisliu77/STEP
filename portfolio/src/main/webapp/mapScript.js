@@ -102,10 +102,7 @@ const postMarker = function(lat, lng, title, description) {
     params.append('lng', lng);
     params.append('title', title);
     params.append('description', description);
-    if(title.value == "" || description.value == "") {
-        alert("You have entered invalid input");
-        return false;
-    }
+   
     fetch('/markers', {method: 'POST', body: params});
 }
 
@@ -141,10 +138,12 @@ const buildInfoWindowInput = function(lat, lng) {
     button.appendChild(document.createTextNode('Submit'));
 
     button.addEventListener('click', function() {
-        const res = postMarker(lat, lng, title.value, description.value); 
-        if(res != false) {
-            createMarkerForDisplay(lat, lng, title.value, description.value);
+        if(title.value == "" || description.value == "") {
+            alert("You have entered invalid input");
+            return false;
         }
+        postMarker(lat, lng, title.value, description.value); 
+        createMarkerForDisplay(lat, lng, title.value, description.value);
         editMarker.setMap(null);
     });
     const containerDiv = document.createElement('div');
