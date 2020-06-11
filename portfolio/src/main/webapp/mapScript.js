@@ -68,7 +68,7 @@ const initMap = function() {
     const unc = {lat: 35.905112, lng: -79.046892}
     map = new google.maps.Map(document.getElementById("map"), {
         center: unc,
-        zoom: 14
+        zoom: 14,
     });
 
     map.addListener('click', (event) => {
