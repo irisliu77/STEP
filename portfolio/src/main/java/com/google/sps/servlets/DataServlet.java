@@ -58,7 +58,7 @@ public class DataServlet extends HttpServlet {
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(comment);
-        response.sendRedirect("/index.html");
+        response.sendRedirect("/map.html");
     }
 
     private int getRequestNum(HttpServletRequest request) {

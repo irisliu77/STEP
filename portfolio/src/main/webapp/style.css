@@ -111,3 +111,13 @@
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
+}
+
+#title-input, #description-input {
+    margin-bottom: 5px;
+}
