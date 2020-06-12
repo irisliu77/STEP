@@ -31,7 +31,7 @@ const getComments = function(max) {
     });
 };
 
-/** Creates an <li> element containing text. */
+/* Creates an <li> element containing text. */
 const createCommentElement = function(comment) {
     const commentElement = document.createElement('li');
     commentElement.className = 'comment';
@@ -66,7 +66,7 @@ let editMarker;
 
 const initMap = function() {
     const unc = {lat: 35.905112, lng: -79.046892}
-    map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById('map'), {
         center: unc,
         zoom: 14,
     });
@@ -83,7 +83,7 @@ const initMap = function() {
 }
 
 
-/** Creates a marker that shows a read-only info window when clicked. */
+/* Creates a marker that shows a read-only info window when clicked. */
 const createMarkerForDisplay = function(lat, lng, title, description) {
     const marker = new google.maps.Marker({position: {lat: lat, lng: lng}, map: map, title: title});
     const content = '<div><h1>'+ title +'</h1></div>' + 
@@ -95,7 +95,7 @@ const createMarkerForDisplay = function(lat, lng, title, description) {
     });
 }
 
-/** Sends a marker to the backend for saving. */
+/* Sends a marker to the backend for saving. */
 const postMarker = function(lat, lng, title, description) {
     const params = new URLSearchParams();
     params.append('lat', lat);
@@ -106,7 +106,7 @@ const postMarker = function(lat, lng, title, description) {
     fetch('/markers', {method: 'POST', body: params});
 }
 
-/** Creates a marker that shows a textbox the user can edit. */
+/* Creates a marker that shows a textbox the user can edit. */
 const createMarkerForEdit = function(lat, lng) {
     // If we're already showing an editable marker, then remove it.
     if (editMarker) {
@@ -123,22 +123,22 @@ const createMarkerForEdit = function(lat, lng) {
     infoWindow.open(map, editMarker);
 }
 
-/**
+/*
  * Builds and returns HTML elements that show an editable textbox and a submit
  * button.
  */
 const buildInfoWindowInput = function(lat, lng) {
     const title = document.createElement('input');
-    title.setAttribute("placeholder", "Title")
-    title.setAttribute("id", "title-input");
+    title.setAttribute('placeholder', 'Title')
+    title.setAttribute('id', 'title-input');
     const description = document.createElement('textarea');
-    description.setAttribute("placeholder", "Description");
-    description.setAttribute("id", "description-input");
+    description.setAttribute('placeholder', 'Description');
+    description.setAttribute('id', 'description-input');
     const button = document.createElement('button');
     button.appendChild(document.createTextNode('Submit'));
 
     button.addEventListener('click', function() {
-        if(title.value == "" || description.value == "") {
+        if (title.value === '' || description.value === '') {
             alert("You have entered invalid input");
             return false;
         }
