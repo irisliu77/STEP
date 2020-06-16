@@ -18,6 +18,18 @@ import java.util.Collection;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    //throw new UnsupportedOperationException("TODO: Implement this method.");
+    Collections.sort(events, Event.ORDER_BY_START);
+    for (Event e : events) {
+      System.out.println(e.getWhen());
+    }
   }
+
+  public static final Comparator<Event> ORDER_BY_START = new Comparator<Event>() {
+    @Override
+    public int compare(Event a, Event b) {
+      return Long.compare(a.getWhen().start, b.getWhen().start);
+    }
+  };
 }
+
