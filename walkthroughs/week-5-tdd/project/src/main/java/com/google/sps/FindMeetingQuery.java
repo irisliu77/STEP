@@ -43,6 +43,18 @@ public final class FindMeetingQuery {
     List<TimeRange> mergedUnavailableTimes = mergeUnavailableTimes(unavailableTimes);
     // Get available time slot base on merged unavailable time.
     List<TimeRange> availableTimes = getAvailableTimes(mergedUnavailableTimes, request.getDuration());
+    // Deal with optional attendees.
+    if (!optionalAttendees.isEmpty()) {
+      List<TimeRange> optionalUnavailableTimes = getUnavailableTimes(events, optionalAttendees);
+      optionalUnavailableTimes.addAll(mergedUnavailableTimes);
+      List<TimeRange> optionalMergedUnavailableTimes = mergeUnavailableTimes(optionalUnavailableTimes);
+      List<TimeRange> combineAvailableTimes = getAvailableTimes(optionalMergedUnavailableTimes, request.getDuration());
+      if (mandatoryAttendees.isEmpty()) {
+        return combineAvailableTimes;
+      } else if (!combineAvailableTimes.isEmpty()) {
+        return combineAvailableTimes;
+      }
+    }
     return availableTimes;
   }
 
