@@ -58,6 +58,11 @@ public final class FindMeetingQuery {
     return availableTimes;
   }
 
+  /**
+  * @param  events  a list of existing events.
+  * @param  mandatoryAttendees a list of mandatory attendees for the requested event.
+  * @return a list of maybe overlaping timeRange that at least one mandatory attendee is unavailable
+  */
   private List<TimeRange> getUnavailableTimes(Collection<Event> events, Collection<String> mandatoryAttendees) {
     List<TimeRange> unavailableTimes = new ArrayList<>();
     for (Event e : events) {
@@ -102,6 +107,11 @@ public final class FindMeetingQuery {
     return mergedUnavailableTimes;
   }
 
+  /**
+  * @param  timeRanges  a list of sorted, non-overlapping time range that at least one mandatory attendee is unavailable.
+  * @param  duration    the length of requested event.
+  * @return a list of sorted, non-overlaping timeRange that all mandatory attendee are available.
+  */
   private List<TimeRange> getAvailableTimes(List<TimeRange> timeRanges, long duration) {
     List<TimeRange> availableTimes = new ArrayList<>();
     int prevEnd = TimeRange.START_OF_DAY;
