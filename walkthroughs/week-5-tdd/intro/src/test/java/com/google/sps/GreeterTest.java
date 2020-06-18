@@ -30,6 +30,7 @@ public final class GreeterTest {
 
     Assert.assertEquals("Hello Ada", greeting);
   }
+
   @Test
   public void testGreetingTrimsWhitespace() {
     Greeter greeter = new Greeter();
@@ -38,5 +39,5 @@ public final class GreeterTest {
 
     // Whitespace should be trimmed
     Assert.assertEquals("Hello Ada", greeting);
-}
+  }
 }

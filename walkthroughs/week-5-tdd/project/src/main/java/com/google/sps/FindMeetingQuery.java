@@ -24,17 +24,17 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     // If the request meeting is longer than the duration of one day, return an empty list.
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
-      return Arrays.asList();
+      return Collections.emptyList();
     }
     // If there is no event on the calendar currently, return whole day as possible time slot.
-    if (events.size() == 0) {
+    if (events.isEmpty()) {
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
     Collection<String> mandatoryAttendees = request.getAttendees();
     Collection<String> optionalAttendees = request.getOptionalAttendees();
     // If no mandatory attendees or optional attendees, return whole day.
-    if (mandatoryAttendees.size() == 0 && optionalAttendees.size() == 0) {
+    if (mandatoryAttendees.isEmpty() && optionalAttendees.isEmpty()) {
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
     // Get unavailable time of mandatory attendees.
@@ -50,18 +50,19 @@ public final class FindMeetingQuery {
     List<TimeRange> unavailableTimes = new ArrayList<>();
     for (Event e : events) {
       Set<String> attendees = e.getAttendees();
-      for (String attendee : attendees) {
-        // If there is at least one mandatory attendee for the requested event, 
-        // mark the duration of this event as unavailable.
-        if (mandatoryAttendees.contains(attendee)) {
-          unavailableTimes.add(e.getWhen());
-          break;
-        }
+      Set<String> intersection = new HashSet<String>(attendees);
+      intersection.retainAll(mandatoryAttendees);
+      if(!intersection.isEmpty()) {
+        unavailableTimes.add(e.getWhen());
       }
     }
     return unavailableTimes;
   }
 
+  /**
+  * @param  timeRanges  a list of timeRanges that has overlaps and is not sorted.
+  * @return a list of sorted, non-overlaping timeRange based on timeRanges
+  */
   private List<TimeRange> mergeUnavailableTimes(List<TimeRange> timeRanges) {
     Collections.sort(timeRanges, TimeRange.ORDER_BY_START);
     List<TimeRange> mergedUnavailableTimes = new ArrayList<>();
@@ -81,9 +82,8 @@ public final class FindMeetingQuery {
           // the start time of previous events should be earlier or equal to current event,
           // and we keep the later end time.
           int end = Math.max(t.end(), latestTimeRange.end());
-          // Remove the previous time range with overlap.
-          mergedUnavailableTimes.remove(mergedUnavailableTimes.size() - 1);
-          mergedUnavailableTimes.add(TimeRange.fromStartEnd(latestTimeRange.start(), end, false));
+          // Set the previous time range to be the merged new time range.
+          mergedUnavailableTimes.set(mergedUnavailableTimes.size() - 1, TimeRange.fromStartEnd(latestTimeRange.start(), end, false));
         }
       }
     }
@@ -93,12 +93,12 @@ public final class FindMeetingQuery {
   private List<TimeRange> getAvailableTimes(List<TimeRange> timeRanges, long duration) {
     List<TimeRange> availableTimes = new ArrayList<>();
     int prevEnd = TimeRange.START_OF_DAY;
-    for (int i = 0; i < timeRanges.size(); i++) {
-      TimeRange availableTimeRange = TimeRange.fromStartEnd(prevEnd, timeRanges.get(i).start(), false);
+    for (TimeRange t : timeRanges) {
+      TimeRange availableTimeRange = TimeRange.fromStartEnd(prevEnd, t.start(), false);
       if (availableTimeRange.duration() >= duration) {
         availableTimes.add(availableTimeRange);
       }
-      prevEnd = timeRanges.get(i).end();
+      prevEnd = t.end();
     }
     // Deal with the time after the last meeting until the end of day.
     TimeRange lastTimeRange = TimeRange.fromStartEnd(prevEnd, TimeRange.END_OF_DAY, true);
