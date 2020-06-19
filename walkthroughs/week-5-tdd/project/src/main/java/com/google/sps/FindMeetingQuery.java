@@ -40,15 +40,15 @@ public final class FindMeetingQuery {
     // Get unavailable time of mandatory attendees.
     List<TimeRange> unavailableTimes = getUnavailableTimes(events, mandatoryAttendees);
     // Merge unavailable intervals with overlaps.
-    List<TimeRange> mergedUnavailableTimes = mergeUnavailableTimes(unavailableTimes);
+    unavailableTimes = mergeUnavailableTimes(unavailableTimes);
     // Get available time slot base on merged unavailable time.
-    List<TimeRange> availableTimes = getAvailableTimes(mergedUnavailableTimes, request.getDuration());
+    List<TimeRange> availableTimes = getAvailableTimes(unavailableTimes, request.getDuration());
     // Deal with optional attendees.
     if (!optionalAttendees.isEmpty()) {
       List<TimeRange> optionalUnavailableTimes = getUnavailableTimes(events, optionalAttendees);
-      optionalUnavailableTimes.addAll(mergedUnavailableTimes);
-      List<TimeRange> optionalMergedUnavailableTimes = mergeUnavailableTimes(optionalUnavailableTimes);
-      List<TimeRange> combineAvailableTimes = getAvailableTimes(optionalMergedUnavailableTimes, request.getDuration());
+      optionalUnavailableTimes.addAll(unavailableTimes);
+      optionalUnavailableTimes = mergeUnavailableTimes(optionalUnavailableTimes);
+      List<TimeRange> combineAvailableTimes = getAvailableTimes(optionalUnavailableTimes, request.getDuration());
       if (mandatoryAttendees.isEmpty()) {
         return combineAvailableTimes;
       } else if (!combineAvailableTimes.isEmpty()) {
@@ -59,9 +59,9 @@ public final class FindMeetingQuery {
   }
 
   /**
-  * @param  events  a list of existing events.
-  * @param  mandatoryAttendees a list of mandatory attendees for the requested event.
-  * @return a list of maybe overlaping timeRange that at least one mandatory attendee is unavailable
+  * @param  events a list of existing events.
+  * @param  mandatoryAttendees a list of mandatory attendees for the requested event
+  * @return a list of maybe overlapping timeRange that at least one mandatory attendee is unavailable
   */
   private List<TimeRange> getUnavailableTimes(Collection<Event> events, Collection<String> mandatoryAttendees) {
     List<TimeRange> unavailableTimes = new ArrayList<>();
@@ -77,7 +77,7 @@ public final class FindMeetingQuery {
   }
 
   /**
-  * @param  timeRanges  a list of timeRanges that has overlaps and is not sorted.
+  * @param  timeRanges a list of timeRanges that has overlaps and is not sorted
   * @return a list of sorted, non-overlaping timeRange based on timeRanges
   */
   private List<TimeRange> mergeUnavailableTimes(List<TimeRange> timeRanges) {
@@ -100,7 +100,8 @@ public final class FindMeetingQuery {
           // and we keep the later end time.
           int end = Math.max(t.end(), latestTimeRange.end());
           // Set the previous time range to be the merged new time range.
-          mergedUnavailableTimes.set(mergedUnavailableTimes.size() - 1, TimeRange.fromStartEnd(latestTimeRange.start(), end, false));
+          mergedUnavailableTimes.set(mergedUnavailableTimes.size() - 1, 
+                                     TimeRange.fromStartEnd(latestTimeRange.start(), end, false));
         }
       }
     }
@@ -108,9 +109,9 @@ public final class FindMeetingQuery {
   }
 
   /**
-  * @param  timeRanges  a list of sorted, non-overlapping time range that at least one mandatory attendee is unavailable.
-  * @param  duration    the length of requested event.
-  * @return a list of sorted, non-overlaping timeRange that all mandatory attendee are available.
+  * @param timeRanges  a list of sorted, non-overlapping time range that at least one mandatory attendee is unavailable
+  * @param duration    the length of requested event.
+  * @return a list of sorted, non-overlaping timeRange that all mandatory attendee are available
   */
   private List<TimeRange> getAvailableTimes(List<TimeRange> timeRanges, long duration) {
     List<TimeRange> availableTimes = new ArrayList<>();
